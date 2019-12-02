@@ -1,9 +1,11 @@
 package com.study.springboot.user.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.study.springboot.user.entity.User;
+import com.study.springboot.user.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -14,8 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-12-02
  */
 @RestController
-@RequestMapping("/user/user")
+@RequestMapping("/user")
+@Slf4j
 public class UserController {
+
+    @Autowired
+    IUserService userService;
+
+    @GetMapping("find/{id}")
+    public User getUserById(@PathVariable("id") Integer id){
+        return userService.getUserById(id);
+    }
 
 }
 

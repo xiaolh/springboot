@@ -39,12 +39,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userMapper.insert(user);
     }
 
-    //@Scheduled(fixedRate = 20 * 60 * 1000)
-    public void getUserCache(){
-        User user = getUserById(1);
-        log.info(user.toString());
-    }
-
     @Cacheable
     public User getUserById(Integer id){
         return userMapper.selectById(id);
