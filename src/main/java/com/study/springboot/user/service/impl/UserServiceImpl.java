@@ -44,4 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userMapper.selectById(id);
     }
 
+    //@Scheduled(fixedRate = 20 * 60 * 1000)
+    public void sdfasdf(){
+        log.info("wtf");
+    }
+
 }

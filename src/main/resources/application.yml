@@ -6,5 +6,13 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
+  profiles:
+    include: pro
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: ERROR
