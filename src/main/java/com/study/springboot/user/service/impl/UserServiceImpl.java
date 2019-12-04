@@ -46,7 +46,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     //@Scheduled(fixedRate = 20 * 60 * 1000)
     public void sdfasdf(){
-        log.info("wtf");
+        for (int i = 0;i < 200;i++){
+            log.info("info");
+            log.error("error");
+        }
     }
 
 }
