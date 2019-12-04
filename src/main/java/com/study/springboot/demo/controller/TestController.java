@@ -20,6 +20,11 @@ public class TestController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @GetMapping("index")
+    public String index(){
+        return "This is index !";
+    }
+
     @GetMapping("generate/orderNo/{prefix}")
     public String generateOrderNo(@PathVariable("prefix") String prefix){
         return StringUtils.generateOrderCode(prefix);
