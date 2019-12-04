@@ -1,13 +1,22 @@
 package com.study.springboot;
 
-import org.junit.jupiter.api.Test;
+import com.study.springboot.user.entity.User;
+import com.study.springboot.user.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@Slf4j
 class SpringbootApplicationTests {
 
-    @Test
+    @Autowired
+    private UserMapper userMapper;
+
+    //@Test
     void contextLoads() {
+        User user = userMapper.selectById(1);
+        log.info("user-{}",user.toString());
     }
 
 }
