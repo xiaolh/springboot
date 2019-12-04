@@ -7,9 +7,8 @@
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- 输出到文件 INFO -->
+    <!-- 输出到文件 -->
     <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>springboot.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <maxFileSize>10KB</maxFileSize>
             <fileNamePattern>LOG_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
@@ -21,7 +20,6 @@
     </appender>
     <!-- 输出到文件 ERROR -->
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>springboot_error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <maxFileSize>10KB</maxFileSize>
             <fileNamePattern>ERROR_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
