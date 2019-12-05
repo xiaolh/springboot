@@ -79,7 +79,12 @@
             <artifactId>hutool-all</artifactId>
             <version>5.0.6</version>
         </dependency>
-        <!-- test -->
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <!-- springboot test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
