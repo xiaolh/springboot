@@ -26,8 +26,8 @@ public class User implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
     /**
      * 是否作废
@@ -53,6 +53,5 @@ public class User implements Serializable {
      * 创建时间
      */
     private Date createAt;
-
 
 }

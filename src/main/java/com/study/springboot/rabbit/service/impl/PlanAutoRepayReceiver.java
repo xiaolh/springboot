@@ -19,7 +19,7 @@ public class PlanAutoRepayReceiver {
         try {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
-            log.error("计划自动还款发生异常"+e.getMessage());
+            log.error("发生异常 {}",e.getMessage());
             e.printStackTrace();
         }
         if(user == null) {

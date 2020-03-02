@@ -1,5 +1,6 @@
 package com.study.springboot.user.service.impl;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.springboot.user.entity.User;
 import com.study.springboot.user.mapper.UserMapper;
@@ -10,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * <p>
@@ -32,10 +32,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void testWtf(){
         User user = new User();
         user.setIsTrash(false);
-        user.setUserName("admin");
+        user.setUserName("god_xlh_two");
         user.setPassword("123456");
-        user.setEmail("admin@study.com");
-        user.setCreateAt(new Date());
+        user.setEmail("acexlh@live.com");
+        user.setCreateAt(new DateTime());
         userMapper.insert(user);
     }
 
