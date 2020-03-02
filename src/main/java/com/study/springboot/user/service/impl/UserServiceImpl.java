@@ -32,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void testWtf(){
         User user = new User();
         user.setIsTrash(false);
-        user.setUserName("god_xlh_two");
+        user.setUserName("god_xlh");
         user.setPassword("123456");
         user.setEmail("acexlh@live.com");
         user.setCreateAt(new DateTime());
