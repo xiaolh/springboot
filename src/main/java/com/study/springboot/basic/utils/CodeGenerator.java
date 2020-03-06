@@ -1,4 +1,4 @@
-package com.study.springboot.utils;
+package com.study.springboot.basic.utils;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;

@@ -1,23 +1,24 @@
-package com.study.springboot.utils;
+package com.study.springboot.basic.utils;
 
-import java.text.SimpleDateFormat;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.RandomUtil;
+
 import java.util.Date;
 
-public class StringUtils {
+public class UniversalUtils {
 
     /**
      * 生成订单号
-     * @param prefix
-     * @return
+     * @param prefix 前缀
+     * @return 订单号
      */
     public static String generateOrderCode(String prefix){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         StringBuilder builder = new StringBuilder();
         builder.append(prefix == null ? "OR" : prefix.toUpperCase());
         builder.append("-");
-        builder.append(formatter.format(new Date()));
+        builder.append(DateUtil.format(new Date(),"yyyyMMddHHmmss"));
         builder.append("-");
-        builder.append((int)((Math.random() * 9 + 1) * 1000000));
+        builder.append(RandomUtil.randomNumbers(7));
         return builder.toString();
     }
 

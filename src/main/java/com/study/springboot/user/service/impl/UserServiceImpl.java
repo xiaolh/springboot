@@ -1,16 +1,17 @@
 package com.study.springboot.user.service.impl;
 
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.study.springboot.basic.bean.Error;
+import com.study.springboot.basic.bean.UniversalException;
 import com.study.springboot.user.entity.User;
 import com.study.springboot.user.mapper.UserMapper;
 import com.study.springboot.user.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
@@ -25,8 +26,8 @@ import javax.annotation.Resource;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-    @Resource
-    UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     //@Scheduled(fixedRate = 20 * 60 * 1000)
     public void testWtf(){
@@ -39,17 +40,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userMapper.insert(user);
     }
 
-    @Cacheable
-    public User getUserById(Integer id){
-        return userMapper.selectById(id);
-    }
-
-    //@Scheduled(fixedRate = 20 * 60 * 1000)
-    public void sdfasdf(){
-        for (int i = 0;i < 200;i++){
-            log.info("info");
-            log.error("error");
+    //@Cacheable
+    @Override
+    public User getUserById(Long id){
+        switch (RandomUtil.randomInt(3)){
+            case 1:
+            throw new RuntimeException();
+            case 2:
+            throw new UniversalException(Error.FAIL);
         }
+        User user = userMapper.selectById(id);
+        if (user == null){
+            throw new UniversalException(Error.USER_NOT_FOUND);
+        }
+        return user;
     }
 
 }

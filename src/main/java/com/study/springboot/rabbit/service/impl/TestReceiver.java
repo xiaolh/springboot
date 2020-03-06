@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class PlanAutoRepayReceiver {
+public class TestReceiver {
 
     @RabbitListener(queues="testQueue")
     public void receive(@Payload User user, Channel channel, Message message) {
@@ -25,11 +25,7 @@ public class PlanAutoRepayReceiver {
         if(user == null) {
             return;
         }
-        try{
-            log.info(user.toString());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        log.info(user.toString());
     }
 
 }

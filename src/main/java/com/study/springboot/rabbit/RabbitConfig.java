@@ -1,4 +1,4 @@
-package com.study.springboot.config;
+package com.study.springboot.rabbit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
@@ -18,26 +18,19 @@ public class RabbitConfig {
 
     @Bean
     public DirectExchange defaultExchange() {
-        boolean durable = true;
-        boolean autoDelete = false;
-        return new DirectExchange("defaultExchange", durable, autoDelete);
+        return new DirectExchange("defaultExchange", true, false);
     }
 
     /**
      * 测试队列
-     * @return
      */
     @Bean
     public Queue testQueue() {
-        boolean durable = true;
-        boolean exclusive = false;
-        boolean autoDelete = false;
-        return new Queue("testQueue", durable, exclusive, autoDelete);
+        return new Queue("testQueue", true, false, false);
     }
 
     /**
      * 测试绑定
-     * @return
      */
     @Bean
     public Binding failPlanBinding() {

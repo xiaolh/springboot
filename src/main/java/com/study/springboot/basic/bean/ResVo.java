@@ -1,4 +1,4 @@
-package com.study.springboot.common.bean;
+package com.study.springboot.basic.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,12 +17,12 @@ public class ResVo {
     private String msg;
     private Object data;
 
-    public ResVo success(){
-        return new ResVo(Constants.SUCCESS_CODE,Constants.SUCCESS,null);
+    public static ResVo success(Object data){
+        return new ResVo(Constants.SUCCESS_CODE,Constants.SUCCESS,data);
     }
 
-    public ResVo success(Object data){
-        return new ResVo(Constants.SUCCESS_CODE,Constants.SUCCESS,data);
+    public static ResVo fail(String code,String msg,Object data){
+        return new ResVo(code,msg,data);
     }
 
 }

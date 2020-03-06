@@ -1,4 +1,4 @@
-package com.study.springboot.common.bean;
+package com.study.springboot.basic.bean;
 
 /**
  * @author xiaolh
