@@ -1,4 +1,4 @@
-package com.study.springboot.thread.bean;
+package com.study.springboot.thread;
 
 /**
  * @author xiaolh
@@ -14,11 +14,6 @@ public class TicketAddThread implements Runnable{
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         for (int i = 0;i < 2000;i ++){
             app.addTicket();
         }

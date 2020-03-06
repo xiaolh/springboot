@@ -1,4 +1,4 @@
-package com.study.springboot.thread.bean;
+package com.study.springboot.thread;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class TicketApp {
     /**
      * 买票
      */
-    public synchronized void sellTicket(){
+    public void sellTicket(){
         this.count --;
         log.info("ADD-{}",count.toString());
     }
@@ -31,9 +31,18 @@ public class TicketApp {
     /**
      * 加票
      */
-    public synchronized void addTicket(){
+    public void addTicket(){
         this.count ++;
         log.info("SUB-{}",count.toString());
+    }
+
+    public static void main(String[] args) {
+        TicketApp app = new TicketApp(2000);
+        TicketAddThread addThread = new TicketAddThread(app);
+        TicketSubThread subThread = new TicketSubThread(app);
+        new Thread(addThread).start();
+        new Thread(subThread).start();
+        log.info("NOW-{}",app.getCount());
     }
 
 }
