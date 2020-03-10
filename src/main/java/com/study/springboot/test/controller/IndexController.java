@@ -5,15 +5,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("test")
+@RequestMapping("index")
 @Slf4j
-public class TestController {
+@ApiIgnore
+public class IndexController {
 
-    @GetMapping("index")
+    @GetMapping("")
     public String index(){
-        return "This is index !";
+        return "<h1>This is index !</h1>";
     }
 
     @GetMapping("generate/orderNo/{prefix}")
