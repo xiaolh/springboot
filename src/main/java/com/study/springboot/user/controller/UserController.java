@@ -31,7 +31,7 @@ public class UserController {
     IUserService userService;
 
     @ApiOperation("获取用户信息")
-    @ApiImplicitParam(name = "id",value = "用户 ID",dataType = "Integer",required = true,paramType = "path")
+    @ApiImplicitParam(name = "id",value = "用户 ID",dataType = "Integer",paramType = "path")
     @GetMapping("find/{id}")
     public ResVo getUserById(@PathVariable Long id){
         return ResVo.success(userService.getUserById(id));

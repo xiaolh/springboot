@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,6 +24,8 @@ public class TestClass {
 
     @Test
     public void afsdf(){
+        System.out.println(new Date().getTime());
+        System.out.println(String.format("第[%d]笔计划没有成功",12));
         for (int i = 0;i < 10;i++){
             System.out.println(UniversalUtils.generateOrderCode("JD"));
         }
