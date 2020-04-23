@@ -1,10 +1,10 @@
 package com.study.springboot.user.service.impl;
 
-import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.RandomUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.study.springboot.basic.bean.Error;
-import com.study.springboot.basic.bean.UniversalException;
+import com.study.springboot.basic.entity.Error;
+import com.study.springboot.basic.entity.UniversalException;
 import com.study.springboot.user.entity.User;
 import com.study.springboot.user.mapper.UserMapper;
 import com.study.springboot.user.service.IUserService;
@@ -29,17 +29,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private UserMapper userMapper;
 
-    //@Scheduled(fixedRate = 20 * 60 * 1000)
-    public void testWtf(){
-        User user = new User();
-        user.setIsTrash(false);
-        user.setUserName("god_xlh");
-        user.setPassword("123456");
-        user.setEmail("acexlh@live.com");
-        user.setCreateAt(new DateTime());
-        userMapper.insert(user);
-    }
-
     //@Cacheable
     @Override
     public User getUserById(Long id){
@@ -54,6 +43,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new UniversalException(Error.USER_NOT_FOUND);
         }
         return user;
+    }
+
+    @Override
+    public Integer addUser(User user) {
+        int success = userMapper.insert(user);
+        return success;
+    }
+
+    @Override
+    public User getUserByUsernamePassword(User user) {
+        return userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword()));
     }
 
 }

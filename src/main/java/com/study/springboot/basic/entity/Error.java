@@ -1,4 +1,4 @@
-package com.study.springboot.basic.bean;
+package com.study.springboot.basic.entity;
 
 public enum Error {
 

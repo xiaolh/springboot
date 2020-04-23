@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+    <div style="padding: 40px">
+        <h1>This is index!</h1>
+        <p>
+            <span th:text="${session.username}"></span> <button class="btn btn-sm" onclick="logout()">logout</button>
+        </p>
+        <p>
+            <i class="fa fa-spinner fa-spin"></i>
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+            <i class="fa fa-refresh fa-spin"></i>
+            <i class="fa fa-cog fa-spin"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+        </p>
+
+        <blockquote>
+            <p>good good study, day day up!</p>
+            <cite>-- xiaolh</cite>
+        </blockquote>
+    </div>
+    <!--<a href="/img/b-bor-p.jpg"><img width="100%" src="/img/b-bor-p2.jpg"></a>-->
+    <a href="https://www.runoob.com/wp-content/uploads/2013/07/pic_html5.gif"><img src="https://www.runoob.com/wp-content/uploads/2013/07/pic_html5.gif"></a>
+    <p></p>
+
+    <script>
+        function logout() {
+            if (confirm("你确定要取消登陆码？")) {
+                location.href = "/user/logout";
+            }
+        }
+    </script>
+
+    <!-- icon -->
+    <link rel="shortcut icon" href="https://www.easyicon.net/download/ico/1196537/128/" type="image/x-icon" />
+    <!-- spectre -->
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre-exp.min.css" rel="stylesheet">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    <!-- jquery -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+</html>

@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("index")
+@RequestMapping("utils")
 @Slf4j
 @ApiIgnore
-public class IndexController {
+public class UtilsController {
 
     @GetMapping("")
     public String index(){
-        return "<h1>This is index !</h1>";
+        return "<h1>This is utils !</h1>";
     }
 
     @GetMapping("generate/orderNo/{prefix}")
