@@ -2,71 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登陆</title>
-    <!-- icon -->
-    <link rel="shortcut icon" href="https://www.easyicon.net/download/ico/1196537/128/" type="image/x-icon" />
-    <!-- spectre -->
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre-icons.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre-exp.min.css" rel="stylesheet">
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
     <!-- jquery -->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
-    <div style="width: 400px;padding: 30px;margin: 30px;border: 1px solid #dddddd;background-color: #fcfcfc">
-        <h4><i class="fa fa-github"></i> user login</h4>
-        <form action="/user/login" method="post">
-            <div class="form-group">
-                <label class="form-label" for="username">用户名：</label>
-                <input type="text" id="username" name="username" class="form-input" placeholder="用户名"><br>
+    <div class="container">
+        <div class="columns col-gapless" style="margin:50px auto">
+            <div class="column col-3 col-xs-12 col-mx-auto">
+                <div style="width: 97%;margin: 0px auto;padding: 7%;border: 1px solid #dddddd;background-color: #fcfcfc">
+                    <h4><i class="fa fa-github"></i> user login</h4>
+                    <form action="/user/login" method="post">
+                        <div class="form-group">
+                            <label class="form-label" for="username">用户名：</label>
+                            <input type="text" id="username" name="username" class="form-input" placeholder="用户名"><br>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">密码：</label>
+                            <input type="password" id="password" name="password" class="form-input" placeholder="密码"><br>
+                        </div>
+                        <button id="loginBtn" type="button" onclick="login()" class="btn btn-primary">登陆</button>
+                        <a class="btn btn-link" href="/user/regist">注册</a>
+                    </form>
+                    <br>
+                    <p id="message" class="text-error"></p>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="password">密码：</label>
-                <input type="password" id="password" name="password" class="form-input" placeholder="密码"><br>
-            </div>
-            <button id="loginBtn" type="button" onclick="login()" class="btn btn-primary">登陆</button>
-            <a class="btn btn-link" href="/user/regist">注册</a>
-        </form>
-        <br>
-        <p id="message" class="text-error"></p>
-
-        <script>
-
-            //绑定 enter 按下事件
-            $("input").keydown(function (event) {
-                if(event.keyCode == 13) login();
-            });
-
-            //表单 ajax 提交
-            function login() {
-                $("#loginBtn").attr("class","btn btn-primary loading");
-                var username = $("#username").val();
-                var password = $("#password").val();
-                var data = {username:username,password:password};
-                $.post(
-                    "/user/login",
-                    data,
-                    function (res) {
-                        $("#loginBtn").attr("class","btn btn-primary");
-                        if(res.status){
-                            $("#password").attr("class","form-input is-success");
-                            $("#message").attr("class","text-success")
-                            location.href = "/";
-                        }else {
-                            $("#password").val("");
-                            $("#password").attr("class","form-input is-error");
-                            $("p").html(res.message);
-                        }
-                    }
-                )
-            }
-
-        </script>
+        </div>
     </div>
 
+    <script>
+
+        //绑定 enter 按下事件
+        $("#password").keydown(function (event) {
+            if(event.keyCode == 13) login();
+        });
+
+        //表单 ajax 提交
+        function login() {
+            $("#loginBtn").attr("class","btn btn-primary loading");
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var data = {username:username,password:password};
+            $.post(
+                "/user/login",
+                data,
+                function (res) {
+                    $("#loginBtn").attr("class","btn btn-primary");
+                    if(res.status){
+                        $("#password").attr("class","form-input is-success");
+                        $("#message").attr("class","text-success")
+                        location.href = "/";
+                    }else {
+                        $("#password").val("");
+                        $("#password").attr("class","form-input is-error");
+                        $("p").html(res.message);
+                    }
+                }
+            )
+        }
+
+    </script>
+
+    <!-- icon -->
+    <link rel="shortcut icon" href="https://www.easyicon.net/download/ico/1196537/128/" type="image/x-icon" />
+    <!-- spectre -->
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre-exp.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre.min.css" rel="stylesheet">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
     <!-- bg -->
     <script src="/js/bg.js"></script>
     <canvas height="926" width="1920" style="position: fixed; top: 0px; left: 0px; z-index: -1; opacity: 0.5;" id="c_n1"></canvas>

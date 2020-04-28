@@ -2,145 +2,152 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登陆</title>
     <!-- jquery -->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <!-- icon -->
-    <link rel="shortcut icon" href="https://www.easyicon.net/download/ico/1196537/128/" type="image/x-icon" />
-    <!-- spectre -->
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre-icons.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.1/spectre-exp.min.css" rel="stylesheet">
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 <body>
-    <div style="margin: 30px;padding: 30px;border: 1px solid #dddddd;width: 400px;background-color: #fcfcfc">
-        <h4><i class="fa fa-github-alt"></i> 用户注册</h4>
-        <form id="registForm" action="/user/regist" method="post">
-            <div class="form-group">
-                <label class="form-label" for="username">用户名：</label>
-                <input type="text" id="username" name="username" class="form-input" placeholder="建议使用英文" required><br>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="password1">密码：</label>
-                <input id="password1" type="password" name="password" class="form-input" placeholder="密码" required><br>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="password2">确认密码：</label>
-                <input id="password2" type="password" name="password2" class="form-input" placeholder="再次输入密码" required><br>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="name">姓名：</label>
-                <input type="text" id="name" name="name" class="form-input" placeholder="如何称呼您"><br>
-            </div>
-            <div class="form-group">
-                <label id="form-label" for="email">电邮：</label>
-                <input type="email" id="email" name="email" class="form-input" placeholder="电邮"><br>
-            </div>
-            <a id="registLink" class="btn btn-primary" onclick="regist()">注册</a>
-            <a class="btn btn-link" href="/user/login">登陆</a>
-        </form>
-        <br>
-        <p id="message" class="text-error"></p>
 
-        <script>
+    <div class="container">
+        <div class="columns col-gapless" style="margin:50px auto">
+            <div class="column col-3 col-xs-12 col-mx-auto">
+                <div style="width: 97%;margin:0px auto;padding: 7%;border: 1px solid #dddddd;background-color: #fcfcfc">
+                    <h4><i class="fa fa-github-alt"></i> 用户注册</h4>
+                    <form id="registForm" action="/user/regist" method="post">
+                        <div class="form-group">
+                            <label class="form-label" for="username">用户名：</label>
+                            <input type="text" id="username" name="username" class="form-input" placeholder="建议使用英文" required><br>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password1">密码：</label>
+                            <input id="password1" type="password" name="password" class="form-input" placeholder="密码" required><br>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password2">确认密码：</label>
+                            <input id="password2" type="password" name="password2" class="form-input" placeholder="再次输入密码" required><br>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="name">姓名：</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="如何称呼您"><br>
+                        </div>
+                        <div class="form-group">
+                            <label id="form-label" for="email">电邮：</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="电邮"><br>
+                        </div>
+                        <a id="registLink" class="btn btn-primary" onclick="regist()">注册</a>
+                        <a class="btn btn-link" href="/user/login">登陆</a>
+                    </form>
+                    <br>
+                    <p id="message" class="text-error"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            // 注册
-            function regist() {
-                $("#registLink").attr("class","btn btn-primary loading");
-                var formElement = document.querySelector("form");
-                var data = new FormData(formElement);
-                if(validForm()){
-                    $("#password2").attr("class","form-input");
-                    $.ajax({
-                        type:"post",
-                        url:"/user/regist",
-                        data:data,
-                        processData: false,
-                        contentType:false,
-                        dataType:'json',
-                        success:function (res) {
-                            $("#registLink").attr("class","btn btn-primary");
-                            if(res.status){
-                                $("#message").attr("class","text-success");
-                                $("#message").html("注册成功，即将跳转到登陆页面！");
-                                setTimeout(toLogin,2000);
-                            }else {
-                                $("#message").attr("class","text-error");
-                                $("#message").html(res.message);
-                            }
-                        },
-                        error:function(data){
-                            alert("发生错误！");
-                        }
-                    })
-                }
-            }
+    <script>
 
-            // 表单验证
-            function validForm() {
-
-                var inputArray = $("input");
-                for (var i = 0; i < inputArray.length; i++) {
-                    if (inputArray[i].value == ""){
-                        $("#message").attr("class", "text-error");
-                        $("#message").html("请填写内容！！");
+        // 注册
+        function regist() {
+            $("#registLink").attr("class","btn btn-primary loading");
+            var formElement = document.querySelector("form");
+            var data = new FormData(formElement);
+            if(validForm()){
+                $("#password2").attr("class","form-input");
+                $.ajax({
+                    type:"post",
+                    url:"/user/regist",
+                    data:data,
+                    processData: false,
+                    contentType:false,
+                    dataType:'json',
+                    success:function (res) {
                         $("#registLink").attr("class","btn btn-primary");
-                        $(inputArray[i]).attr("class","form-input is-error");
-                        return false;
-                    }else {
-                        $(inputArray[i]).attr("class","form-input");
-                        $("#message").html("");
-                        if (i == 2){
-                            var password1 = inputArray[i-1].value;
-                            var password2 = inputArray[i].value;
-                            if (password1 != password2) {
-                                $("#password2").attr("class", "form-input is-error");
-                                $("#message").attr("class", "text-error");
-                                $("#message").html("两次输入密码不一致！");
-                                $("#registLink").attr("class","btn btn-primary");
-                                return false;
-                            }else {
-                                $("#password2").attr("class", "form-input");
-                                $("#message").html("");
-                            }
+                        if(res.status){
+                            $("#message").attr("class","text-success");
+                            $("#message").html("注册成功，即将跳转到登陆页面！");
+                            setTimeout(toLogin,2000);
+                        }else {
+                            $("#message").attr("class","text-error");
+                            $("#message").html(res.message);
                         }
-                        if (i == 4){
-                            var email = inputArray[i].value;
-                            var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
-                            if (!reg.test(email)){
-                                $("#message").attr("class", "text-error");
-                                $("#message").html("邮箱格式不正确！！");
-                                $("#registLink").attr("class","btn btn-primary");
-                                return false;
-                            }else{
-                                $("#password2").attr("class", "form-input");
-                                $("#message").html("");
-                            }
+                    },
+                    error:function(data){
+                        alert("发生错误！");
+                    }
+                })
+            }
+        }
+
+        // 表单验证
+        function validForm() {
+
+            var inputArray = $("input");
+            for (var i = 0; i < inputArray.length; i++) {
+                if (inputArray[i].value == ""){
+                    $("#message").attr("class", "text-error");
+                    $("#message").html("请填写内容！！");
+                    $("#registLink").attr("class","btn btn-primary");
+                    $(inputArray[i]).attr("class","form-input is-error");
+                    return false;
+                }else {
+                    $(inputArray[i]).attr("class","form-input");
+                    $("#message").html("");
+                    if (i == 2){
+                        var password1 = inputArray[i-1].value;
+                        var password2 = inputArray[i].value;
+                        if (password1 != password2) {
+                            $("#password2").attr("class", "form-input is-error");
+                            $("#message").attr("class", "text-error");
+                            $("#message").html("两次输入密码不一致！");
+                            $("#registLink").attr("class","btn btn-primary");
+                            return false;
+                        }else {
+                            $("#password2").attr("class", "form-input");
+                            $("#message").html("");
+                        }
+                    }
+                    if (i == 4){
+                        var email = inputArray[i].value;
+                        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                        if (!reg.test(email)){
+                            $("#message").attr("class", "text-error");
+                            $("#message").html("邮箱格式不正确！！");
+                            $("#registLink").attr("class","btn btn-primary");
+                            return false;
+                        }else{
+                            $("#password2").attr("class", "form-input");
+                            $("#message").html("");
                         }
                     }
                 }
-                for (var i = 0; i < inputArray.length; i++) {
-                    $(inputArray[i]).attr("class","form-input");
-                }
-                return true;
             }
-
-            // 跳转到登陆页面
-            function toLogin() {
-                location.href = "/user/login";
+            for (var i = 0; i < inputArray.length; i++) {
+                $(inputArray[i]).attr("class","form-input");
             }
+            return true;
+        }
 
-            //绑定 enter 按下事件
-            $("input").keydown(function (event) {
-                if(event.keyCode == 13) regist();
-            });
+        // 跳转到登陆页面
+        function toLogin() {
+            location.href = "/user/login";
+        }
 
-        </script>
+        //绑定 enter 按下事件
+        $("input").keydown(function (event) {
+            if(event.keyCode == 13) regist();
+        });
 
-    </div>
+    </script>
 
+    <!-- icon -->
+    <link rel="shortcut icon" href="https://www.easyicon.net/download/ico/1196537/128/" type="image/x-icon" />
+    <!-- spectre -->
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre-exp.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre.min.css" rel="stylesheet">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
     <!-- bg -->
     <script src="/js/bg.js"></script>
     <canvas height="926" width="1920" style="position: fixed; top: 0px; left: 0px; z-index: -1; opacity: 0.5;" id="c_n1"></canvas>
