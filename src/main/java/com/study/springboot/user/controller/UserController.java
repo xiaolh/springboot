@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 
@@ -45,6 +46,7 @@ public class UserController {
      * @return 登陆页面
      */
     @GetMapping("login")
+    @ApiIgnore
     public String toLogin(){
         return "login";
     }
@@ -55,6 +57,7 @@ public class UserController {
      */
     @PostMapping("login")
     @ResponseBody
+    @ApiOperation("登录")
     public Result login(HttpSession session, User u){
 
         User user = userService.getUserByUsernamePassword(u);
@@ -70,6 +73,7 @@ public class UserController {
      * @return 视图地址
      */
     @GetMapping("regist")
+    @ApiIgnore
     public String toRegist(){
         return "regist";
     }
@@ -81,6 +85,7 @@ public class UserController {
      */
     @PostMapping("regist")
     @ResponseBody
+    @ApiOperation("注册")
     public Result regist(User user){
 
         Integer success = userService.addUser(user);
@@ -96,6 +101,7 @@ public class UserController {
      * @return WEB 首页
      */
     @GetMapping("logout")
+    @ApiOperation("等出")
     public String logout(HttpSession session){
 
         session.removeAttribute("username");
