@@ -40,4 +40,20 @@ public class TestClass {
         log.info(name);
     }
 
+    @Test
+    public void fuli(){
+        Double balance = 0d;
+        Double yearAmount = 200000d;
+        Double profit = 0.2;
+        Integer year = 5;
+        for (int i =0;i < year;i++){
+            balance += yearAmount;
+            balance *= (1 +profit);
+        }
+        log.info("年入 {}",yearAmount.toString());
+        log.info("年化 {}%",profit.intValue() * 100);
+        log.info("时间 {} 年",year);
+        log.info("复利后 {}",balance);
+    }
+
 }
