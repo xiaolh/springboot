@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -42,18 +44,22 @@ public class TestClass {
 
     @Test
     public void fuli(){
-        Double balance = 0d;
-        Double yearAmount = 200000d;
-        Double profit = 0.2;
-        Integer year = 5;
-        for (int i =0;i < year;i++){
-            balance += yearAmount;
-            balance *= (1 +profit);
-        }
-        log.info("年入 {}",yearAmount.toString());
-        log.info("年化 {}%",profit.intValue() * 100);
+        Double balance = 100000d;
+        Double yearAmount = 120000d;
+        Integer year = 15;
+        Double more = 1.2;
+
+        log.info("起始 {}",balance.toString());
+        log.info("起始年鑫 {}",yearAmount.toString());
+        log.info("年化 {}%",Double.valueOf((more - 1)) * 100);
         log.info("时间 {} 年",year);
-        log.info("复利后 {}",balance);
+
+        for (int i =0;i < year;i++){
+            yearAmount *= more;
+            balance += yearAmount;
+            balance *= more;
+        }
+        log.info("复利后 {} 万",new BigDecimal(balance / 10000).setScale(0, RoundingMode.HALF_UP).toString());
     }
 
 }
