@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TicketApp {
 
     /**
-     * 数量
+     * 数量 & 原子数字
      */
     private AtomicInteger count;
 
