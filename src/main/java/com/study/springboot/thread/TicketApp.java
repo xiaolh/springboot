@@ -2,6 +2,9 @@ package com.study.springboot.thread;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author xiaolh
@@ -14,35 +17,51 @@ public class TicketApp {
     /**
      * 数量
      */
-    private Integer count = 10000;
+    private AtomicInteger count;
 
-    public TicketApp(Integer count){
-        this.count = count;
-    }
+    public TicketApp(){}
 
     /**
      * 买票
      */
     public void sellTicket(){
-        this.count --;
-        log.info("ADD-{}",count.toString());
+        this.count.decrementAndGet();
+        log.info("SUB-{}",count.toString());
     }
 
     /**
      * 加票
      */
     public void addTicket(){
-        this.count ++;
-        log.info("SUB-{}",count.toString());
+        this.count.incrementAndGet();
+        log.info("ADD-{}",count.toString());
     }
 
-    public static void main(String[] args) {
-        TicketApp app = new TicketApp(2000);
-        TicketAddThread addThread = new TicketAddThread(app);
-        TicketSubThread subThread = new TicketSubThread(app);
-        new Thread(addThread).start();
-        new Thread(subThread).start();
+    @Test
+    public void test1() throws Exception{
+
+        TicketApp app = new TicketApp();
+        app.setCount(new AtomicInteger(200));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0;i < 200;i ++){
+                    app.addTicket();
+                }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0;i < 200;i ++){
+                    app.sellTicket();
+                }
+            }
+        }).start();
+        Thread.sleep(2000);
         log.info("NOW-{}",app.getCount());
+
     }
 
 }
