@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,6 +63,42 @@ public class TestClass {
             balance *= more;
         }
         log.info("复利后 {} 万",new BigDecimal(balance / 10000).setScale(0, RoundingMode.HALF_UP).toString());
+    }
+
+    @Test
+    public void testMath(){
+        System.out.println(Math.round(1.2));
+        System.out.println(Math.round(1.5));
+        System.out.println(Math.round(1.6));
+        System.out.println(Math.round(-1.2));
+        System.out.println(Math.round(-1.5));
+        System.out.println(Math.round(-1.6));
+    }
+
+    @Test
+    public void testForeach(){
+        List<String> tempList = new ArrayList<>();
+        tempList.add("a");
+        tempList.add("b");
+        tempList.add("c");
+        tempList.add("d");
+        tempList.add("e");
+        /*for (int i=0;i<tempList.size();i++){
+            if (tempList.get(i).equals("c")){
+                tempList.remove(i);
+                continue;
+            }
+            System.out.println(tempList.get(i));
+        }*/
+        Iterator<String> iterator = tempList.iterator();
+        while (iterator.hasNext()){
+            String next = iterator.next();
+            if (next.equals("c")){
+                iterator.remove();
+                continue;
+            }
+            System.out.println(next);
+        }
     }
 
 }

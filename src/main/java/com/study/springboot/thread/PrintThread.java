@@ -1,5 +1,10 @@
 package com.study.springboot.thread;
 
+import sun.nio.ch.ThreadPool;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @author xiaolh
  * @date 2020/3/6
@@ -24,12 +29,13 @@ public class PrintThread implements Runnable{
 
     public static void main(String[] args) {
 
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         PrintThread threadA = new PrintThread("AAA");
         PrintThread threadB = new PrintThread("BBB");
         PrintThread threadC = new PrintThread("CCC");
-        new Thread(threadA).start();
-        new Thread(threadB).start();
-        new Thread(threadC).start();
+        executorService.execute(threadA);
+        executorService.execute(threadB);
+        executorService.execute(threadC);
 
     }
 
