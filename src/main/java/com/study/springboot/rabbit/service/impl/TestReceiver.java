@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Slf4j
-@Component
+//@Component
 public class TestReceiver {
 
-    @RabbitListener(queues="testQueue")
+    //@RabbitListener(queues="testQueue")
     public void receive(@Payload User user, Channel channel, Message message) {
         try {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

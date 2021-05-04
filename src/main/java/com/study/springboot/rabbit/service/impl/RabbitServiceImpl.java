@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
  * @author xiaolh
  * @date 2019/12/4
  */
-@Service
+//@Service
 public class RabbitServiceImpl implements RabbitService {
 
-    @Autowired
+    //@Autowired
     private RabbitTemplate rabbitTemplate;
 
     public void sendUser(User user){
         rabbitTemplate.convertAndSend("defaultExchange", "testKey", user);
     }
 
-    @Autowired
+    //@Autowired
     UserMapper userMapper;
 
     //@Scheduled(fixedRate = 20 * 60 * 1000)
