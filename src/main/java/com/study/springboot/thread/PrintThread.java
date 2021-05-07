@@ -2,14 +2,16 @@ package com.study.springboot.thread;
 
 import sun.nio.ch.ThreadPool;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 /**
  * @author xiaolh
  * @date 2020/3/6
  */
-public class PrintThread implements Runnable{
+public class PrintThread implements Runnable, Callable {
 
     private String content;
 
@@ -27,15 +29,36 @@ public class PrintThread implements Runnable{
         }
     }
 
-    public static void main(String[] args) {
+    @Override
+    public Object call() throws Exception {
+        for (int i = 0;i < 10;i++){
+            try{
+                Thread.sleep(200);
+            }catch (Exception e){}
+            System.out.println(content);
+        }
+        return "wtf";
+    }
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+    public static void main(String[] args) throws Exception{
+
+        //ExecutorService executorService = Executors.newFixedThreadPool(10);
         PrintThread threadA = new PrintThread("AAA");
         PrintThread threadB = new PrintThread("BBB");
         PrintThread threadC = new PrintThread("CCC");
-        executorService.execute(threadA);
+        /*executorService.execute(threadA);
         executorService.execute(threadB);
-        executorService.execute(threadC);
+        executorService.execute(threadC);*/
+
+        FutureTask fta = new FutureTask(threadA);
+        FutureTask ftb = new FutureTask(threadB);
+        FutureTask ftc = new FutureTask(threadC);
+
+        new Thread(fta).start();
+        new Thread(ftb).start();
+        new Thread(ftc).start();
+
+        System.out.println(fta.get());
 
     }
 
