@@ -42,7 +42,7 @@ public class SpringbootApplication extends WebMvcConfigurerAdapter implements Ap
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.info("============================================================= STARTED =============================================================");
+        log.info("============================================================== STARTED ==============================================================");
     }
 
 }
