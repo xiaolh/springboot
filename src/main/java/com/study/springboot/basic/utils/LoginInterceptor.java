@@ -27,10 +27,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		String projectName = request.getSession().getServletContext().getContextPath();
 		Object user = request.getSession().getAttribute("username");
-		if(user == null){
+		/*if(user == null){
 			response.sendRedirect("/user/login");
 			return false;
-		}
+		}*/
 		return true;
 	}
 	

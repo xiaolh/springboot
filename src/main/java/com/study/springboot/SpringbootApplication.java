@@ -2,7 +2,6 @@ package com.study.springboot;
 
 import com.study.springboot.basic.utils.LoginInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SpringBootApplication
 @EnableScheduling
 @EnableCaching
-@MapperScan(basePackages = {"com.study.springboot.*.mapper"})
 public class SpringbootApplication extends WebMvcConfigurerAdapter implements ApplicationRunner {
 
     public static void main(String[] args) {
@@ -30,7 +28,6 @@ public class SpringbootApplication extends WebMvcConfigurerAdapter implements Ap
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
         InterceptorRegistration registration = registry.addInterceptor(new LoginInterceptor());
         registration.addPathPatterns("/**");
         registration.excludePathPatterns("/**/*login*");
