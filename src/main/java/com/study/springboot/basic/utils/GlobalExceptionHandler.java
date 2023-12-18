@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResVo defaultExceptionHandler(HttpServletRequest request,Exception e){
+        e.printStackTrace();
         return ResVo.fail("-1",e.getClass().getName(),Error.FAIL);
     }
 

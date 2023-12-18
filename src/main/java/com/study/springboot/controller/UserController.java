@@ -1,10 +1,10 @@
-package com.study.springboot.user.controller;
+package com.study.springboot.controller;
 
 
 import com.study.springboot.basic.entity.ResVo;
 import com.study.springboot.pattern.entity.Result;
-import com.study.springboot.user.entity.User;
-import com.study.springboot.user.service.IUserService;
+import com.study.springboot.entity.User;
+import com.study.springboot.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;

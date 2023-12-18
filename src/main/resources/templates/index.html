@@ -1,57 +1,108 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="UTF-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <!-- jquery -->
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="UTF-8" />
+    <title>Steam 饰品走势</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
+<div align="center">
+    <input type="text" id="nameInput" placeholder="饰品名称" required>
+    <input type="text" id="urlInput" placeholder="Steam 市场链接" required>
+    <button type="button" onclick="collectUrlData()">添加</button><br>
+</div>
+<div align="center">
+    <input type="text" id="searchInput" placeholder="饰品名称">
+    <button type="button" onclick="search()">搜索</button><br>
+</div>
+<div align="center">
+    <input type="text" id="collectNameInput" placeholder="默认爬取全部">
+    <button type="button" onclick="collectData()">爬取数据</button><br>
+</div>
+<div id="container"></div>
+<script>
 
-    <div style="padding: 40px">
-        <h1>This is index!</h1>
-        <p>
-            <span th:text="${session.username}"></span> <button class="btn btn-sm" onclick="logout()">logout</button>
-        </p>
-        <p>
-            <i class="fa fa-spinner fa-spin"></i>
-            <i class="fa fa-circle-o-notch fa-spin"></i>
-            <i class="fa fa-refresh fa-spin"></i>
-            <i class="fa fa-cog fa-spin"></i>
-            <i class="fa fa-spinner fa-pulse"></i>
-        </p>
-
-        <blockquote>
-            <p>good good study, day day up!</p>
-            <cite>-- xiaolh</cite>
-        </blockquote>
-    </div>
-    <!--<a href="/img/b-bor-p.jpg"><img width="100%" src="/img/b-bor-p2.jpg"></a>-->
-    <div class="container">
-        <div class="columns">
-            <div class="column col-3 col-xs-8">
-                <img width="100%" src="/img/support_author.jpg">
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function logout() {
-            if (confirm("你确定要取消登陆码？")) {
-                location.href = "/user/logout";
+    function collectUrlData(){
+        var name = $("#nameInput").val();
+        var url = $("#urlInput").val();
+        var data = {name:name,url:url};
+        $.post(
+            "/crawler/dota2/saveUrl",
+            data,
+            function (res) {
+                alert(res);
             }
-        }
-    </script>
+        )
+    }
 
-    <!-- icon -->
-    <link rel="shortcut icon" href="https://www.easyicon.net/download/ico/1196537/128/" type="image/x-icon" />
-    <!-- spectre -->
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre-exp.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre-icons.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/spectre.css/0.5.8/spectre.min.css" rel="stylesheet">
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    function collectData(){
+        var collectName = $("#collectNameInput").val();
+        $.get(
+            "/crawler/dota2/collect?name=" + collectName,
+            function (res) {
+                alert(res)
+            }
+        )
+    }
 
+    function search(){
+        var name = $("#searchInput").val();
+        $.get(
+            "/crawler/dota2/history?name=" + name,
+            function (res) {
+
+                var title = {
+                    text: name
+                };
+                var subtitle = {
+                    text: '数据量：' + res.count
+                };
+                var xAxis = {
+                    categories: res.dateList
+                };
+                var yAxis = {
+                    title: {
+                        text: '金额单位 (￥)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                };
+
+                var tooltip = {
+                    valueSuffix: '￥'
+                }
+
+                var legend = {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                };
+
+                var series =  [
+                    {
+                        name: name,
+                        data: res.priceList
+                    }
+                ];
+
+                var json = {};
+
+                json.title = title;
+                json.subtitle = subtitle;
+                json.xAxis = xAxis;
+                json.yAxis = yAxis;
+                json.tooltip = tooltip;
+                json.legend = legend;
+                json.series = series;
+
+                $('#container').highcharts(json);
+            }
+        )
+    }
+</script>
 </body>
 </html>

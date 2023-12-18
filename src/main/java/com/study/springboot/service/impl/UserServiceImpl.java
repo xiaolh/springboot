@@ -1,13 +1,13 @@
-package com.study.springboot.user.service.impl;
+package com.study.springboot.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.springboot.basic.entity.Error;
 import com.study.springboot.basic.entity.UniversalException;
-import com.study.springboot.user.entity.User;
-import com.study.springboot.user.mapper.UserMapper;
-import com.study.springboot.user.service.IUserService;
+import com.study.springboot.entity.User;
+import com.study.springboot.mapper.UserMapper;
+import com.study.springboot.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;

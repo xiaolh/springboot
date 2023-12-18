@@ -1,11 +1,9 @@
-package com.study.springboot.rabbit.service.impl;
+package com.study.springboot.service.impl;
 
-import com.study.springboot.rabbit.service.RabbitService;
-import com.study.springboot.user.entity.User;
-import com.study.springboot.user.mapper.UserMapper;
+import com.study.springboot.service.RabbitService;
+import com.study.springboot.entity.User;
+import com.study.springboot.mapper.UserMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * @author xiaolh

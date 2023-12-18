@@ -1,6 +1,6 @@
-package com.study.springboot.user.service;
+package com.study.springboot.service;
 
-import com.study.springboot.user.entity.User;
+import com.study.springboot.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

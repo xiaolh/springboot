@@ -1,7 +1,7 @@
-package com.study.springboot.user.controller;
+package com.study.springboot.controller;
 
-import com.study.springboot.user.mapper.StarMapper;
-import com.study.springboot.user.mapper2.CardMapper;
+import com.study.springboot.mapper.StarMapper;
+import com.study.springboot.mapper2.CardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

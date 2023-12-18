@@ -3,14 +3,14 @@ server:
 spring:
   datasource:
     db1:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/girl?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/girl?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
       username: root
-      password: root
-      driver-class-name: com.mysql.jdbc.Driver
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
     db2:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/data?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/data?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
       username: root
-      password: root
+      password: 123456
       driver-class-name: com.mysql.jdbc.Driver
 #  thymeleaf:
 #    cache: false
@@ -24,4 +24,4 @@ logging:
       springframework:
         boot:
           autoconfigure: ERROR
-    com.study.springboot:
+    com.study.springboot: DEBUG

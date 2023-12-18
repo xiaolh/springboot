@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.springboot.mapper2.MarketPriceHistoryMapper">
+
+    <insert id="insertUrl">
+        INSERT INTO `data`.collect_url
+        (id,name, url)
+        VALUES(null,#{name},#{url});
+    </insert>
+
+    <select id="getUrlList" resultType="String">
+        select url
+        from collect_url
+        <if test="name != null and name != ''">
+            where name like concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <delete id="deleteByName">
+        delete from market_price_history
+        where name = #{name}
+    </delete>
+
+    <insert id="insertBatch">
+        insert into market_price_history (id, name, `date`, price, count) values
+        <foreach collection="historyList" separator="," item="item">
+            (null,#{item.name},#{item.date},#{item.price},#{item.count})
+        </foreach>
+    </insert>
+
+    <select id="getHistoryByName" resultType="Map">
+        select date,price
+        from market_price_history
+        where name = #{name}
+    </select>
+
+</mapper>

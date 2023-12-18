@@ -19,7 +19,7 @@ import javax.sql.DataSource;
  * @create 2023/3/28
  */
 @Configuration
-@MapperScan(basePackages = {"com.study.springboot.user.mapper2"},sqlSessionFactoryRef = "db2SqlSessionFactory")
+@MapperScan(basePackages = {"com.study.springboot.mapper2"},sqlSessionFactoryRef = "db2SqlSessionFactory")
 public class DB2DataSourceConfig {
 
     @Bean(name = "db2DataSource")

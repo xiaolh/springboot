@@ -1,6 +1,6 @@
-package com.study.springboot.user.mapper;
+package com.study.springboot.mapper;
 
-import com.study.springboot.user.entity.User;
+import com.study.springboot.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.study.springboot.user.mapper2.CardMapper">
+<mapper namespace="com.study.springboot.mapper2.CardMapper">
     <select id="findById" resultType="java.util.HashMap">
         select * from video_card
     </select>

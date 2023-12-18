@@ -1,4 +1,4 @@
-package com.study.springboot.user.mapper2;
+package com.study.springboot.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @create 2023/3/28
  */
 @Mapper
-public interface CardMapper {
+public interface StarMapper {
 
     List<HashMap> findById();
 
