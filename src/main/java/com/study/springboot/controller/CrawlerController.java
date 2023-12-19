@@ -27,7 +27,7 @@ import java.util.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/crawler")
+@RequestMapping("/collect")
 public class CrawlerController {
 
     @Autowired
@@ -41,11 +41,25 @@ public class CrawlerController {
         return "SUCCESS";
     }
 
-    @GetMapping("/dota2/collect")
+    @GetMapping("/dota2/itemList")
+    public List itemList(){
+        List<Map> urlList = historyMapper.getUrlList(null);
+        List<String> itemList = new ArrayList<>();
+        for (Map map : urlList) {
+            itemList.add((String) map.get("name"));
+        }
+        return itemList;
+    }
+
+    @GetMapping("/dota2/getData")
     public String testGetPage(@RequestParam("name") String name) throws ParseException {
         long beginTime = System.currentTimeMillis();
-        List<String> urlList = historyMapper.getUrlList(name);
-        if (CollectionUtil.isEmpty(urlList)) return "没有找到饰品 | " + name;
+        List<Map> setMapList = historyMapper.getUrlList(name);
+        if (CollectionUtil.isEmpty(setMapList)) return "没有找到饰品 | " + name;
+        List<String> urlList = new ArrayList<>();
+        for (Map map : setMapList) {
+            urlList.add((String) map.get("url"));
+        }
         List<MaketPriceHistory> historyList = new ArrayList<>();
         String resStr = "";
         for (String url : urlList) {

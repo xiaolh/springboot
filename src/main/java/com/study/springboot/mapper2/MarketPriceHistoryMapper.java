@@ -17,7 +17,8 @@ public interface MarketPriceHistoryMapper {
 
     int insertUrl(@Param("name") String name, @Param("url") String url);
 
-    List<String> getUrlList(String name);
+    @MapKey("name")
+    List<Map> getUrlList(String name);
 
     int deleteByName(String name);
 

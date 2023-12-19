@@ -12,22 +12,35 @@
     <button type="button" onclick="collectUrlData()">添加</button><br>
 </div>
 <div align="center">
-    <input type="text" id="searchInput" placeholder="饰品名称">
-    <button type="button" onclick="search()">搜索</button><br>
-</div>
-<div align="center">
     <input type="text" id="collectNameInput" placeholder="默认爬取全部">
     <button type="button" onclick="collectData()">爬取数据</button><br>
 </div>
+<div align="center">
+    <select id = "itemSelect" onchange="search()"></select>
+</div>
 <div id="container"></div>
 <script>
+
+    $(function () {
+        $.get(
+            "/collect/dota2/itemList",
+            function (res) {
+                $("#itemSelect").append("<option value=''>请选择</option>")
+                for (var i = 0;i < res.length;i++){
+                    $("#itemSelect").append("<option value='" + res[i] + "'>" + res[i] + "</option>")
+                }
+                $("#itemSelect").val("守夜丰功");
+                search();
+            }
+        )
+    })
 
     function collectUrlData(){
         var name = $("#nameInput").val();
         var url = $("#urlInput").val();
         var data = {name:name,url:url};
         $.post(
-            "/crawler/dota2/saveUrl",
+            "/collect/dota2/saveUrl",
             data,
             function (res) {
                 alert(res);
@@ -38,7 +51,7 @@
     function collectData(){
         var collectName = $("#collectNameInput").val();
         $.get(
-            "/crawler/dota2/collect?name=" + collectName,
+            "/collect/dota2/getData?name=" + collectName,
             function (res) {
                 alert(res)
             }
@@ -46,9 +59,9 @@
     }
 
     function search(){
-        var name = $("#searchInput").val();
+        var name = $("#itemSelect").val();
         $.get(
-            "/crawler/dota2/history?name=" + name,
+            "/collect/dota2/history?name=" + name,
             function (res) {
 
                 var title = {
@@ -98,6 +111,7 @@
                 json.tooltip = tooltip;
                 json.legend = legend;
                 json.series = series;
+                json.chart = {zoomType:'x'}
 
                 $('#container').highcharts(json);
             }

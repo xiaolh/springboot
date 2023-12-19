@@ -8,8 +8,8 @@
         VALUES(null,#{name},#{url});
     </insert>
 
-    <select id="getUrlList" resultType="String">
-        select url
+    <select id="getUrlList" resultType="Map">
+        select name,url
         from collect_url
         <if test="name != null and name != ''">
             where name like concat('%',#{name},'%')
