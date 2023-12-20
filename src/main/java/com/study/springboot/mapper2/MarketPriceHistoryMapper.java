@@ -15,10 +15,14 @@ import java.util.Map;
 @Mapper
 public interface MarketPriceHistoryMapper {
 
-    int insertUrl(@Param("name") String name, @Param("url") String url);
+    int insertUrl(@Param("url") String url);
+
+    String getDictionaryValue(String key);
 
     @MapKey("name")
     List<Map> getUrlList(String name);
+
+    int updateUrl(@Param("name") String name,@Param("id") Integer id);
 
     int deleteByName(String name);
 

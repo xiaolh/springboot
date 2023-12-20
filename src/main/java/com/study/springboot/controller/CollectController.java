@@ -18,8 +18,14 @@ public class CollectController {
     private CollectService collectService;
 
     @PostMapping("/dota2/saveUrl")
-    public String saveUrl(@RequestParam("name") String name,@RequestParam("url") String url){
-        collectService.insertUrl(name,url);
+    public String saveUrl(@RequestParam("url") String url){
+        collectService.insertUrl(url);
+        return "SUCCESS";
+    }
+
+    @GetMapping("/dota2/getData")
+    public String getData() throws Exception{
+        collectService.collectJob();
         return "SUCCESS";
     }
 

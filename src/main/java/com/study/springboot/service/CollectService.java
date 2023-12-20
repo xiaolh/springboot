@@ -15,6 +15,6 @@ public interface CollectService {
 
     Object getHistory(String name);
 
-    void insertUrl(String name, String url);
+    void insertUrl(String url);
 
 }

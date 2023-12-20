@@ -2,6 +2,7 @@ package com.study.springboot.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.study.springboot.entity.MaketPriceHistory;
@@ -38,28 +39,37 @@ public class CollectServiceImpl implements CollectService {
     @Override
     @Scheduled(fixedRate = 20 * 60 * 1000)
     public void collectJob() throws ParseException {
-        long beginTime = System.currentTimeMillis();
+
+        log.info("================================ collectJob start ================================");
         List<Map> setMapList = historyMapper.getUrlList(null);
-        List<String> urlList = new ArrayList<>();
+        String cookie = historyMapper.getDictionaryValue("cookie");
         for (Map map : setMapList) {
-            urlList.add((String) map.get("url"));
-        }
-        List<MaketPriceHistory> historyList = new ArrayList<>();
-        String resStr = "";
-        for (String url : urlList) {
+            String url = (String) map.get("url");
+            String name = (String) map.get("name");
+            Integer id = (Integer) map.get("id");
             url = URLDecoder.decode(url);
+            List<MaketPriceHistory> historyList = new ArrayList<>();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Accept-Language","zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6");
-            String cookie = "sessionid=5c2acf9b32afa4cb82a93a9c; timezoneOffset=28800,0; browserid=2864916450327407208; webTradeEligibility=%7B%22allowed%22%3A1%2C%22allowed_at_time%22%3A0%2C%22steamguard_required_days%22%3A15%2C%22new_device_cooldown_days%22%3A0%2C%22time_checked%22%3A1702769233%7D; steamCountry=US%7C820fbb8ebb6df356703475a18b44389e; steamLoginSecure=76561198139019128%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEREN18yM0FCQ0RCNl84NUJFMSIsICJzdWIiOiAiNzY1NjExOTgxMzkwMTkxMjgiLCAiYXVkIjogWyAid2ViIiBdLCAiZXhwIjogMTcwMzE1NjgwMywgIm5iZiI6IDE2OTQ0MzAyMTUsICJpYXQiOiAxNzAzMDcwMjE1LCAianRpIjogIjBERENfMjNBQkNEQjhfQzBGMEQiLCAib2F0IjogMTcwMzA3MDIxNCwgInJ0X2V4cCI6IDE3MjEzNDEwNjgsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICI4MS4xNzEuNjIuMTEyIiwgImlwX2NvbmZpcm1lciI6ICI0NS4xOTUuMTguMTQyIiB9.ElISCYlPszuxf1EPoHIJvlyzITg-pSM42ViIjXzPyfd4lpgejvlppZGW_GMzdh7mDmn9eK2SbAsmgH-b-BT9AQ";
             headers.set("Cookie",cookie);
             HttpEntity request = new HttpEntity(headers);
             long pageBeginTime = System.currentTimeMillis();
-            ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+            ResponseEntity<String> exchange = null;
+            try{
+                exchange = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+            }catch (Exception e){
+                log.error("网页请求失败 | {} | {} | {} | {}",e.getClass().getName(),e.getMessage(),name,url);
+                e.printStackTrace();
+                continue;
+            }
             long pageEndTime = System.currentTimeMillis();
             String pageTime = NumberUtil.roundStr(Double.valueOf(pageEndTime - pageBeginTime) / 1000,1);
             String res = exchange.getBody();
+            if (res.contains("在获取该物品的列表时发生了一个错误。请稍后再试。") && StrUtil.isBlank(name)) {
+                log.error("网页返回错误 | {}",url);
+                continue;
+            }
 
-            printFormat("page",res);
             String dataStr = null;
             String itemStr = null;
 
@@ -67,18 +77,19 @@ public class CollectServiceImpl implements CollectService {
             int dataEndIndex = res.indexOf(";",dataBeginIndex);
             dataStr = res.substring(dataBeginIndex,dataEndIndex);
 
-            printFormat("data",dataStr);
             int itemBeginIndex = res.indexOf("market_buy_commodity_item_display ellipsis") + "market_buy_commodity_item_display ellipsis".length();
             itemBeginIndex = res.indexOf("market_listing_item_name_block",itemBeginIndex) + "market_listing_item_name_block".length();
             itemBeginIndex = res.indexOf("market_listing_item_name",itemBeginIndex) + "market_listing_item_name".length();
             itemBeginIndex = res.indexOf(">",itemBeginIndex) + 1;
             int itemEndIndex = res.indexOf("<",itemBeginIndex);
             itemStr = res.substring(itemBeginIndex,itemEndIndex);
-            printFormat("item",itemStr);
-            log.info("{} | 网页请求 | {}",itemStr,pageTime);
+            if (StrUtil.isBlank(name)) historyMapper.updateUrl(itemStr,id);
+            if (StrUtil.isBlank(itemStr)) itemStr = name;
+
             JSONArray jsonArray = JSONUtil.parseArray(dataStr);
-            resStr = resStr + itemStr + " | " + pageTime + " S | " + jsonArray.size() + "\n";
+            log.info("网页请求 | {} | {} S | {}",itemStr,pageTime,jsonArray.size());
             historyMapper.deleteByName(itemStr);
+
             for (Object o : jsonArray) {
                 JSONArray temp = (JSONArray) o;
                 String dateTime = String.valueOf(temp.get(0));
@@ -96,12 +107,9 @@ public class CollectServiceImpl implements CollectService {
                 priceHistory.setDate(date);
                 historyList.add(priceHistory);
             }
-
+            historyMapper.insertBatch(historyList);
         }
-        int successCount = historyMapper.insertBatch(historyList);
-        Long endTime = System.currentTimeMillis();
-        resStr = resStr + "总耗时 | " + NumberUtil.roundStr(Double.valueOf(endTime - beginTime) / 1000,1) + " S" + " | " + successCount;
-        log.info(resStr);
+        log.info("================================ collectJob end ================================");
     }
 
     @Override
@@ -133,14 +141,8 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public void insertUrl(String name, String url) {
-        historyMapper.insertUrl(name,url);
-    }
-
-    public void printFormat(String key, String res){
-        log.info("===================================== " + key +" begin =====================================");
-        log.info(res);
-        log.info("===================================== " + key + " end =====================================");
+    public void insertUrl(String url) {
+        historyMapper.insertUrl(url);
     }
 
 }

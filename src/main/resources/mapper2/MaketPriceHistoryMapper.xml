@@ -5,16 +5,28 @@
     <insert id="insertUrl">
         INSERT INTO `data`.collect_url
         (id,name, url)
-        VALUES(null,#{name},#{url});
+        VALUES(null,null,#{url});
     </insert>
+    
+    <select id="getDictionaryValue" resultType="String">
+        select value
+        from dictionary
+        where `key` = #{key}
+    </select>
 
     <select id="getUrlList" resultType="Map">
-        select name,url
+        select id,name,url
         from collect_url
         <if test="name != null and name != ''">
             where name like concat('%',#{name},'%')
         </if>
     </select>
+
+    <update id="updateUrl">
+        update collect_url
+        set name = #{name}
+        where id = #{id}
+    </update>
 
     <delete id="deleteByName">
         delete from market_price_history

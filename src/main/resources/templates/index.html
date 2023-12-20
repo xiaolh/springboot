@@ -6,13 +6,14 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
+<p align="center">
+    <img src="https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/570/0bbb630d63262dd66d2fdd0f7d37e8661a410075.jpg">
+</p>
 <div align="center">
-    <input type="text" id="nameInput" placeholder="饰品名称" required>
     <input type="text" id="urlInput" placeholder="Steam 市场链接" required>
     <button type="button" onclick="collectUrlData()">添加</button><br>
 </div>
 <div align="center">
-    <input type="text" id="collectNameInput" placeholder="默认爬取全部">
     <button type="button" onclick="collectData()">爬取数据</button><br>
 </div>
 <div align="center">
@@ -22,6 +23,10 @@
 <script>
 
     $(function () {
+        freshSelect();
+    })
+
+    function freshSelect(){
         $.get(
             "/collect/dota2/itemList",
             function (res) {
@@ -29,16 +34,15 @@
                 for (var i = 0;i < res.length;i++){
                     $("#itemSelect").append("<option value='" + res[i] + "'>" + res[i] + "</option>")
                 }
-                $("#itemSelect").val("守夜丰功");
+                $("#itemSelect").val(res[res.length - 1]);
                 search();
             }
         )
-    })
+    }
 
     function collectUrlData(){
-        var name = $("#nameInput").val();
         var url = $("#urlInput").val();
-        var data = {name:name,url:url};
+        var data = {url:url};
         $.post(
             "/collect/dota2/saveUrl",
             data,
@@ -51,9 +55,10 @@
     function collectData(){
         var collectName = $("#collectNameInput").val();
         $.get(
-            "/collect/dota2/getData?name=" + collectName,
+            "/collect/dota2/getData",
             function (res) {
                 alert(res)
+                freshSelect();
             }
         )
     }
@@ -75,7 +80,7 @@
                 };
                 var yAxis = {
                     title: {
-                        text: '金额单位 (￥)'
+                        text: '饰品价格'
                     },
                     plotLines: [{
                         value: 0,
@@ -85,7 +90,7 @@
                 };
 
                 var tooltip = {
-                    valueSuffix: '￥'
+                    valueSuffix: ' 元'
                 }
 
                 var legend = {

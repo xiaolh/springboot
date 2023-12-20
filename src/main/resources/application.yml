@@ -24,4 +24,4 @@ logging:
       springframework:
         boot:
           autoconfigure: ERROR
-    com.study.springboot: DEBUG
+    com.study.springboot: INFO
