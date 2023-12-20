@@ -1,19 +1,20 @@
-package com.study.springboot.controller;
+package com.study.springboot.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.study.springboot.entity.MaketPriceHistory;
 import com.study.springboot.mapper2.MarketPriceHistoryMapper;
+import com.study.springboot.service.CollectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URLDecoder;
@@ -23,39 +24,22 @@ import java.util.*;
 
 /**
  * @auther xiaolh
- * @create 2023/12/14
+ * @create 2023/12/20
  */
 @Slf4j
-@RestController
-@RequestMapping("/collect")
-public class CrawlerController {
+@Service
+public class CollectServiceImpl implements CollectService {
 
     @Autowired
     private MarketPriceHistoryMapper historyMapper;
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    @PostMapping("/dota2/saveUrl")
-    public String saveUrl(@RequestParam("name") String name,@RequestParam("url") String url){
-        historyMapper.insertUrl(name,url);
-        return "SUCCESS";
-    }
-
-    @GetMapping("/dota2/itemList")
-    public List itemList(){
-        List<Map> urlList = historyMapper.getUrlList(null);
-        List<String> itemList = new ArrayList<>();
-        for (Map map : urlList) {
-            itemList.add((String) map.get("name"));
-        }
-        return itemList;
-    }
-
-    @GetMapping("/dota2/getData")
-    public String testGetPage(@RequestParam("name") String name) throws ParseException {
+    @Override
+    @Scheduled(fixedRate = 20 * 60 * 1000)
+    public void collectJob() throws ParseException {
         long beginTime = System.currentTimeMillis();
-        List<Map> setMapList = historyMapper.getUrlList(name);
-        if (CollectionUtil.isEmpty(setMapList)) return "没有找到饰品 | " + name;
+        List<Map> setMapList = historyMapper.getUrlList(null);
         List<String> urlList = new ArrayList<>();
         for (Map map : setMapList) {
             urlList.add((String) map.get("url"));
@@ -66,7 +50,7 @@ public class CrawlerController {
             url = URLDecoder.decode(url);
             HttpHeaders headers = new HttpHeaders();
             headers.set("Accept-Language","zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6");
-            String cookie = "sessionid=5c2acf9b32afa4cb82a93a9c; timezoneOffset=28800,0; browserid=2864916450327407208; webTradeEligibility=%7B%22allowed%22%3A1%2C%22allowed_at_time%22%3A0%2C%22steamguard_required_days%22%3A15%2C%22new_device_cooldown_days%22%3A0%2C%22time_checked%22%3A1702769233%7D; steamCountry=NL%7Caf4afed5ce611fd165e759be6102f618; steamLoginSecure=76561198139019128%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEREN18yM0E2NzA0OV85MDNEOCIsICJzdWIiOiAiNzY1NjExOTgxMzkwMTkxMjgiLCAiYXVkIjogWyAid2ViIiBdLCAiZXhwIjogMTcwMzAwNzUyOSwgIm5iZiI6IDE2OTQyNzk0NzYsICJpYXQiOiAxNzAyOTE5NDc2LCAianRpIjogIjBEREZfMjNBNjcwNkJfRDhCRkIiLCAib2F0IjogMTcwMjkxOTQ3NSwgInJ0X2V4cCI6IDE3MjEyMTQ5MTcsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICI5MS4xNDguMjI0Ljk3IiwgImlwX2NvbmZpcm1lciI6ICIxMDMuMTI5LjI1Mi4yMzMiIH0.4IBla1GgCqc7mBo8o1I4LakEaAUKVN89fEzFb_g69zAe_Klp7POYX5TTmyzvwXHAx88r-xsl6qEFXthJhFgNAQ";
+            String cookie = "sessionid=5c2acf9b32afa4cb82a93a9c; timezoneOffset=28800,0; browserid=2864916450327407208; webTradeEligibility=%7B%22allowed%22%3A1%2C%22allowed_at_time%22%3A0%2C%22steamguard_required_days%22%3A15%2C%22new_device_cooldown_days%22%3A0%2C%22time_checked%22%3A1702769233%7D; steamCountry=US%7C820fbb8ebb6df356703475a18b44389e; steamLoginSecure=76561198139019128%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEREN18yM0FCQ0RCNl84NUJFMSIsICJzdWIiOiAiNzY1NjExOTgxMzkwMTkxMjgiLCAiYXVkIjogWyAid2ViIiBdLCAiZXhwIjogMTcwMzE1NjgwMywgIm5iZiI6IDE2OTQ0MzAyMTUsICJpYXQiOiAxNzAzMDcwMjE1LCAianRpIjogIjBERENfMjNBQkNEQjhfQzBGMEQiLCAib2F0IjogMTcwMzA3MDIxNCwgInJ0X2V4cCI6IDE3MjEzNDEwNjgsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICI4MS4xNzEuNjIuMTEyIiwgImlwX2NvbmZpcm1lciI6ICI0NS4xOTUuMTguMTQyIiB9.ElISCYlPszuxf1EPoHIJvlyzITg-pSM42ViIjXzPyfd4lpgejvlppZGW_GMzdh7mDmn9eK2SbAsmgH-b-BT9AQ";
             headers.set("Cookie",cookie);
             HttpEntity request = new HttpEntity(headers);
             long pageBeginTime = System.currentTimeMillis();
@@ -117,11 +101,21 @@ public class CrawlerController {
         int successCount = historyMapper.insertBatch(historyList);
         Long endTime = System.currentTimeMillis();
         resStr = resStr + "总耗时 | " + NumberUtil.roundStr(Double.valueOf(endTime - beginTime) / 1000,1) + " S" + " | " + successCount;
-        return resStr;
+        log.info(resStr);
     }
 
-    @GetMapping("/dota2/history")
-    public Object getDotaItemHistory(@RequestParam("name") String name){
+    @Override
+    public List getItemList() {
+        List<Map> urlList = historyMapper.getUrlList(null);
+        List<String> itemList = new ArrayList<>();
+        for (Map map : urlList) {
+            itemList.add((String) map.get("name"));
+        }
+        return itemList;
+    }
+
+    @Override
+    public Object getHistory(String name) {
         List<Map> historyList = historyMapper.getHistoryByName(name);
         List<String> dateList = new ArrayList<>();
         List<Double> priceList = new ArrayList<>();
@@ -138,7 +132,10 @@ public class CrawlerController {
         return resMap;
     }
 
-    // ===================================== tool method =====================================
+    @Override
+    public void insertUrl(String name, String url) {
+        historyMapper.insertUrl(name,url);
+    }
 
     public void printFormat(String key, String res){
         log.info("===================================== " + key +" begin =====================================");
