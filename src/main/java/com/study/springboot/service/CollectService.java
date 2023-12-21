@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface CollectService {
 
-    void collectJob() throws ParseException;
+    void collectData() throws ParseException;
 
     List getItemList();
 

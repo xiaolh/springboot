@@ -30,6 +30,7 @@
         $.get(
             "/collect/dota2/itemList",
             function (res) {
+                $("#itemSelect").empty();
                 $("#itemSelect").append("<option value=''>请选择</option>")
                 for (var i = 0;i < res.length;i++){
                     $("#itemSelect").append("<option value='" + res[i] + "'>" + res[i] + "</option>")
@@ -53,7 +54,6 @@
     }
 
     function collectData(){
-        var collectName = $("#collectNameInput").val();
         $.get(
             "/collect/dota2/getData",
             function (res) {
@@ -63,12 +63,11 @@
         )
     }
 
-    function search(){
+    function search_bak(){
         var name = $("#itemSelect").val();
         $.get(
             "/collect/dota2/history?name=" + name,
             function (res) {
-
                 var title = {
                     text: name
                 };
@@ -104,11 +103,15 @@
                     {
                         name: name,
                         data: res.priceList
+                    },
+                    {
+                        name: name + " 成交量",
+                        type: "column",
+                        data: res.volumeList
                     }
                 ];
 
                 var json = {};
-
                 json.title = title;
                 json.subtitle = subtitle;
                 json.xAxis = xAxis;
@@ -116,12 +119,84 @@
                 json.tooltip = tooltip;
                 json.legend = legend;
                 json.series = series;
-                json.chart = {zoomType:'x'}
+                json.chart = {zoomType:'x'};
 
                 $('#container').highcharts(json);
             }
         )
     }
+
+    function search(){
+        var name = $("#itemSelect").val();
+        $.get(
+            "/collect/dota2/history?name=" + name,
+            function (res) {
+                var chart = {
+                    type: 'spline'
+                };
+                var title = {
+                    text: name
+                };
+                var subtitle = {
+                    text: res.count
+                };
+                var xAxis = {
+                    categories: res.dateList
+                };
+                var yAxis = {
+                    title: {
+                        text: '饰品价格'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '\xB0';
+                        }
+                    },
+                    lineWidth: 2
+                };
+                var tooltip = {
+                    crosshairs: true,
+                    shared: true
+                };
+                var plotOptions = {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                };
+                var series= [{
+                    name: "价格",
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: res.priceList
+                }, {
+                    name: "成交量",
+                    marker: {
+                        symbol: 'diamond'
+                    },
+                    data: res.volumeList
+                }
+                ];
+
+                var json = {};
+                json.chart = chart;
+                json.title = title;
+                json.subtitle = subtitle;
+                json.tooltip = tooltip;
+                json.xAxis = xAxis;
+                json.yAxis = yAxis;
+                json.series = series;
+                json.plotOptions = plotOptions;
+                json.chart = {zoomType:'x'};
+                $('#container').highcharts(json);
+            }
+        )
+    }
+
 </script>
 </body>
 </html>

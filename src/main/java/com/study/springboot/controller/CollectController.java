@@ -25,7 +25,7 @@ public class CollectController {
 
     @GetMapping("/dota2/getData")
     public String getData() throws Exception{
-        collectService.collectJob();
+        collectService.collectData();
         return "SUCCESS";
     }
 

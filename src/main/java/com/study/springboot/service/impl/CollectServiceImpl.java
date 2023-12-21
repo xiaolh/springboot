@@ -37,10 +37,10 @@ public class CollectServiceImpl implements CollectService {
     private RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    @Scheduled(fixedRate = 20 * 60 * 1000)
-    public void collectJob() throws ParseException {
+    @Scheduled(cron = "0 0,20,40 * ? * ? ")
+    public void collectData() throws ParseException {
 
-        log.info("================================ collectJob start ================================");
+        log.info("================================ collectJob start " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
         List<Map> setMapList = historyMapper.getUrlList(null);
         String cookie = historyMapper.getDictionaryValue("cookie");
         for (Map map : setMapList) {
@@ -109,7 +109,7 @@ public class CollectServiceImpl implements CollectService {
             }
             historyMapper.insertBatch(historyList);
         }
-        log.info("================================ collectJob end ================================");
+        log.info("================================ collectJob end " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
     }
 
     @Override
@@ -127,15 +127,20 @@ public class CollectServiceImpl implements CollectService {
         List<Map> historyList = historyMapper.getHistoryByName(name);
         List<String> dateList = new ArrayList<>();
         List<Double> priceList = new ArrayList<>();
+        List<Integer> countList = new ArrayList<>();
         for (Map map : historyList) {
             Date date = (Date) map.get("date");
             Double price = (Double) map.get("price");
-            dateList.add(DateUtil.format(date,"yyyy-MM-dd HH"));
+            Integer count = (Integer) map.get("count");
+            dateList.add(DateUtil.format(date,"yyyy-MM-dd HH:00"));
             priceList.add(price);
+            countList.add(count);
+
         }
         Map<String,Object> resMap = new HashMap<>();
         resMap.put("dateList",dateList);
         resMap.put("priceList",priceList);
+        resMap.put("volumeList",countList);
         resMap.put("count",historyList.size());
         return resMap;
     }

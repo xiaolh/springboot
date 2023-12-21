@@ -41,7 +41,7 @@
     </insert>
 
     <select id="getHistoryByName" resultType="Map">
-        select date,price
+        select date,price,count
         from market_price_history
         where name = #{name}
     </select>
