@@ -4,8 +4,8 @@
 
     <insert id="insertUrl">
         INSERT INTO `data`.collect_url
-        (id,name, url)
-        VALUES(null,null,#{url});
+        (id,name, url,collect)
+        VALUES(null,null,#{url},1);
     </insert>
     
     <select id="getDictionaryValue" resultType="String">
@@ -17,6 +17,9 @@
     <select id="getUrlList" resultType="Map">
         select id,name,url
         from collect_url
+        <if test = "collectFlag != null and collectFlag">
+            where collect = 1
+        </if>
         <if test="name != null and name != ''">
             where name like concat('%',#{name},'%')
         </if>

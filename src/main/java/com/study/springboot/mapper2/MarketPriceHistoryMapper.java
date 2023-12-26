@@ -20,7 +20,7 @@ public interface MarketPriceHistoryMapper {
     String getDictionaryValue(String key);
 
     @MapKey("name")
-    List<Map> getUrlList(String name);
+    List<Map> getUrlList(@Param("name") String name,@Param("collectFlag") Boolean collectFlag);
 
     int updateUrl(@Param("name") String name,@Param("id") Integer id);
 

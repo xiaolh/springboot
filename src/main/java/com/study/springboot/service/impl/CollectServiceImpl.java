@@ -41,7 +41,7 @@ public class CollectServiceImpl implements CollectService {
     public void collectData() throws ParseException {
 
         log.info("================================ collectJob start " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
-        List<Map> setMapList = historyMapper.getUrlList(null);
+        List<Map> setMapList = historyMapper.getUrlList(null,true);
         String cookie = historyMapper.getDictionaryValue("cookie");
         for (Map map : setMapList) {
             String url = (String) map.get("url");
@@ -114,7 +114,7 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public List getItemList() {
-        List<Map> urlList = historyMapper.getUrlList(null);
+        List<Map> urlList = historyMapper.getUrlList(null,null);
         List<String> itemList = new ArrayList<>();
         for (Map map : urlList) {
             itemList.add((String) map.get("name"));
