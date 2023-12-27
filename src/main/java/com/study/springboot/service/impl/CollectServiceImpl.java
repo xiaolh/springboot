@@ -42,7 +42,6 @@ public class CollectServiceImpl implements CollectService {
 
         log.info("================================ collectJob start " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
         List<Map> setMapList = historyMapper.getUrlList(null,true);
-        String cookie = historyMapper.getDictionaryValue("cookie");
         int deleteCount = historyMapper.deleteNoNameHistory();
         if (deleteCount > 0) log.info("删除无效数据 | {}",deleteCount);
         for (Map map : setMapList) {
@@ -53,7 +52,6 @@ public class CollectServiceImpl implements CollectService {
             List<MaketPriceHistory> historyList = new ArrayList<>();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Accept-Language","zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6");
-            headers.set("Cookie",cookie);
             HttpEntity request = new HttpEntity(headers);
             long pageBeginTime = System.currentTimeMillis();
             ResponseEntity<String> exchange = null;
@@ -126,16 +124,17 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public Object getHistory(String name) {
+        double rate = 7.14;
         List<Map> historyList = historyMapper.getHistoryByName(name);
         List<String> dateList = new ArrayList<>();
         List<Double> priceList = new ArrayList<>();
         List<Integer> countList = new ArrayList<>();
         for (Map map : historyList) {
             Date date = (Date) map.get("date");
-            Double price = (Double) map.get("price");
+            String price = NumberUtil.roundStr((Double) map.get("price") * rate,2);
             Integer count = (Integer) map.get("count");
             dateList.add(DateUtil.format(date,"yyyy-MM-dd HH:00"));
-            priceList.add(price);
+            priceList.add(Double.valueOf(price));
             countList.add(count);
 
         }

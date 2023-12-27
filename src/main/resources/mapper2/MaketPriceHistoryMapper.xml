@@ -51,7 +51,7 @@
 
     <delete id="deleteNoNameHistory">
         delete from market_price_history
-        where name not in (select name from collect_url)
+        where name not in (select name from collect_url) or name is null
     </delete>
 
 </mapper>
