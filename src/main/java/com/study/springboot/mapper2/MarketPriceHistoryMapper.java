@@ -31,4 +31,6 @@ public interface MarketPriceHistoryMapper {
     @MapKey("date")
     List<Map> getHistoryByName(String name);
 
+    int deleteNoNameHistory();
+
 }

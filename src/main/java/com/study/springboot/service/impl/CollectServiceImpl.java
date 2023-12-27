@@ -43,6 +43,8 @@ public class CollectServiceImpl implements CollectService {
         log.info("================================ collectJob start " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
         List<Map> setMapList = historyMapper.getUrlList(null,true);
         String cookie = historyMapper.getDictionaryValue("cookie");
+        int deleteCount = historyMapper.deleteNoNameHistory();
+        if (deleteCount > 0) log.info("删除无效数据 | {}",deleteCount);
         for (Map map : setMapList) {
             String url = (String) map.get("url");
             String name = (String) map.get("name");

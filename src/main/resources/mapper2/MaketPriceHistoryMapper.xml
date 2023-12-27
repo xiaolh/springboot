@@ -49,4 +49,9 @@
         where name = #{name}
     </select>
 
+    <delete id="deleteNoNameHistory">
+        delete from market_price_history
+        where name not in (select name from collect_url)
+    </delete>
+
 </mapper>
