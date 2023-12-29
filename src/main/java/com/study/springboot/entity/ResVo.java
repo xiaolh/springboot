@@ -1,4 +1,4 @@
-package com.study.springboot.basic.entity;
+package com.study.springboot.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

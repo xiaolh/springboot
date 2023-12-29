@@ -1,4 +1,4 @@
-package com.study.springboot.basic.entity;
+package com.study.springboot.entity;
 
 /**
  * @author xiaolh
@@ -8,5 +8,7 @@ public class Constants {
 
     public static String SUCCESS_CODE = "000";
     public static String SUCCESS = "SUCCESS";
+
+    public static String CNY_USD_RATE = "CNY_USD_RATE";
 
 }

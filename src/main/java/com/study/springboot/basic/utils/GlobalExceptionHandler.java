@@ -1,8 +1,8 @@
 package com.study.springboot.basic.utils;
 
-import com.study.springboot.basic.entity.Error;
-import com.study.springboot.basic.entity.UniversalException;
-import com.study.springboot.basic.entity.ResVo;
+import com.study.springboot.entity.Error;
+import com.study.springboot.entity.UniversalException;
+import com.study.springboot.entity.ResVo;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

@@ -1,15 +1,18 @@
 package com.study.springboot.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.study.springboot.entity.Constants;
 import com.study.springboot.entity.MaketPriceHistory;
 import com.study.springboot.mapper2.MarketPriceHistoryMapper;
 import com.study.springboot.service.CollectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -34,12 +38,17 @@ public class CollectServiceImpl implements CollectService {
     @Autowired
     private MarketPriceHistoryMapper historyMapper;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
-    @Scheduled(cron = "0 0,20,40 * ? * ? ")
+    //@Scheduled(cron = "0 0,20,40 * ? * ? ")
+    @Scheduled(fixedRate = 200)
     public void collectData() throws ParseException {
-
+        cnyUsdRate();
         log.info("================================ collectJob start " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
         List<Map> setMapList = historyMapper.getUrlList(null,true);
         int deleteCount = historyMapper.deleteNoNameHistory();
@@ -149,6 +158,22 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public void insertUrl(String url) {
         historyMapper.insertUrl(url);
+    }
+
+    public Double cnyUsdRate(){
+        // redis
+        String rateStr = (String) redisTemplate.opsForValue().get(Constants.CNY_USD_RATE);
+        if (StrUtil.isNotBlank(rateStr)) return Double.valueOf(rateStr);
+        // http update rate
+        long beginTime = System.currentTimeMillis();
+        String ratePage = restTemplate.getForObject("https://www.xe.com/zh-CN/currencyconverter/convert/?Amount=1&From=USD&To=CNY",String.class);
+        int beginIndex = ratePage.indexOf("1 CNY = ") + 8;
+        int endIndex = ratePage.indexOf(" USD",beginIndex);
+        rateStr = ratePage.substring(beginIndex,endIndex);
+        long endTime = System.currentTimeMillis();
+        log.info("xe rate | 1 CNY = {} USD | {}",rateStr,(endTime - beginTime) / 1000);
+        redisTemplate.opsForValue().set(Constants.CNY_USD_RATE,rateStr, Duration.ofMinutes(20));
+        return new Double(rateStr);
     }
 
 }

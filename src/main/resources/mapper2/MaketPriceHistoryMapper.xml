@@ -7,9 +7,15 @@
         (id,name, url,collect)
         VALUES(null,null,#{url},1);
     </insert>
-    
-    <select id="getDictionaryValue" resultType="String">
-        select value
+
+    <update id="updateDictionary">
+        UPDATE dictionary
+        SET value = #{value}
+        WHERE key = #{key}
+    </update>
+
+    <select id="getDictionaryValue" resultType="Map">
+        select id,key,value,create_time,update_time
         from dictionary
         where `key` = #{key}
     </select>

@@ -1,7 +1,7 @@
 package com.study.springboot.controller;
 
 
-import com.study.springboot.basic.entity.ResVo;
+import com.study.springboot.entity.ResVo;
 import com.study.springboot.pattern.entity.Result;
 import com.study.springboot.entity.User;
 import com.study.springboot.service.IUserService;
