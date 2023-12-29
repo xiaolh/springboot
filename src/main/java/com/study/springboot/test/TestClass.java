@@ -1,6 +1,6 @@
 package com.study.springboot.test;
 
-import com.study.springboot.basic.utils.UniversalUtils;
+import com.study.springboot.utils.UniversalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.study.springboot.basic.utils;
+package com.study.springboot.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;

@@ -1,4 +1,4 @@
-package com.study.springboot.basic.config;
+package com.study.springboot.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;

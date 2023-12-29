@@ -1,4 +1,4 @@
-package com.study.springboot.basic.utils;
+package com.study.springboot.utils;
 
 import com.study.springboot.entity.Error;
 import com.study.springboot.entity.UniversalException;
