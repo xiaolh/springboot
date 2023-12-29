@@ -1,6 +1,5 @@
 package com.study.springboot.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
@@ -38,17 +37,14 @@ public class CollectServiceImpl implements CollectService {
     @Autowired
     private MarketPriceHistoryMapper historyMapper;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
-    //@Scheduled(cron = "0 0,20,40 * ? * ? ")
-    @Scheduled(fixedRate = 200)
+    @Scheduled(cron = "0 0,20,40 * ? * ? ")
     public void collectData() throws ParseException {
-        cnyUsdRate();
         log.info("================================ collectJob start " + DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss") + " ================================");
         List<Map> setMapList = historyMapper.getUrlList(null,true);
         int deleteCount = historyMapper.deleteNoNameHistory();
@@ -133,14 +129,14 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public Object getHistory(String name) {
-        double rate = 7.14;
+        double rate = cnyUsdRate();
         List<Map> historyList = historyMapper.getHistoryByName(name);
         List<String> dateList = new ArrayList<>();
         List<Double> priceList = new ArrayList<>();
         List<Integer> countList = new ArrayList<>();
         for (Map map : historyList) {
             Date date = (Date) map.get("date");
-            String price = NumberUtil.roundStr((Double) map.get("price") * rate,2);
+            String price = NumberUtil.roundStr((Double) map.get("price") / rate,2);
             Integer count = (Integer) map.get("count");
             dateList.add(DateUtil.format(date,"yyyy-MM-dd HH:00"));
             priceList.add(Double.valueOf(price));
