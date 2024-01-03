@@ -7,6 +7,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.study.springboot.entity.Constants;
 import com.study.springboot.entity.MaketPriceHistory;
+import com.study.springboot.entity.TradeHistory;
 import com.study.springboot.mapper2.MarketPriceHistoryMapper;
 import com.study.springboot.service.CollectService;
 import lombok.extern.slf4j.Slf4j;
@@ -170,6 +171,29 @@ public class CollectServiceImpl implements CollectService {
         log.info("xe rate | 1 CNY = {} USD | {}",rateStr,(endTime - beginTime) / 1000);
         redisTemplate.opsForValue().set(Constants.CNY_USD_RATE,rateStr, Duration.ofMinutes(20));
         return new Double(rateStr);
+    }
+
+    @Override
+    public void saveTradeHistory(String name, Integer position, Double price, Integer count) {
+        if (position == 1){
+            List<TradeHistory> tradeList = new ArrayList<>();
+            for (int i = 0;i < count;i++){
+                TradeHistory tradeHistory = new TradeHistory();
+                tradeHistory.setName(name);
+                tradeHistory.setBuyPrice(price);
+                tradeList.add(tradeHistory);
+            }
+            historyMapper.insertTradeHistoryBatch(tradeList);
+        }
+        if (position == 2){
+            List<TradeHistory> tradeList = historyMapper.getUnSellTradeHistory(name);
+            for (int i = 0;i < count;i ++){
+                TradeHistory tradeTemp = tradeList.get(i);
+                tradeTemp.setSellPrice(price);
+                tradeTemp.setCoin(price - tradeTemp.getBuyPrice());
+                historyMapper.updateTradeHistory(tradeTemp);
+            }
+        }
     }
 
 }

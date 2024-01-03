@@ -1,6 +1,7 @@
 package com.study.springboot.mapper2;
 
 import com.study.springboot.entity.MaketPriceHistory;
+import com.study.springboot.entity.TradeHistory;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,5 +36,11 @@ public interface MarketPriceHistoryMapper {
     List<Map> getHistoryByName(String name);
 
     int deleteNoNameHistory();
+
+    int insertTradeHistoryBatch(List<TradeHistory> tradeList);
+
+    List<TradeHistory> getUnSellTradeHistory(String name);
+
+    int updateTradeHistory(TradeHistory tradeHistory);
 
 }

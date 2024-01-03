@@ -1,4 +1,4 @@
-package com.study.springboot.basic.utils;
+package com.study.springboot.utils;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

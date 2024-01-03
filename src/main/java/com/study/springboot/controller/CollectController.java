@@ -39,4 +39,14 @@ public class CollectController {
         return collectService.getHistory(name);
     }
 
+    @PostMapping("/dota2/tradeHistory/save")
+    public String saveHistory(
+            @RequestParam("name") String name,
+            @RequestParam("position") Integer position,
+            @RequestParam("price") Double price,
+            @RequestParam("count") Integer count){
+        collectService.saveTradeHistory(name,position,price,count);
+        return "SUCCESS";
+    }
+
 }

@@ -1,5 +1,5 @@
-package com.study.springboot.test.controller;
-import com.study.springboot.basic.utils.UniversalUtils;
+package com.study.springboot.controller;
+import com.study.springboot.utils.UniversalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
