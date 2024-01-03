@@ -35,3 +35,17 @@ CREATE TABLE `collect_url` (
   `high` double DEFAULT NULL COMMENT '最高价',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2924 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='采集 URL';
+
+-- `data`.trade_record definition
+
+CREATE TABLE `trade_history` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
+  `buy_price` double(18,2) DEFAULT NULL COMMENT '买入价格',
+  `sell_price` double(18,2) DEFAULT NULL COMMENT '卖出价格',
+  `coin` double(18,2) DEFAULT NULL COMMENT '金币',
+  `remark` varchar(2000) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2924 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='交易历史';

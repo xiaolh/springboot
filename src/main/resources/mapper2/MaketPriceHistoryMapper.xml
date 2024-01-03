@@ -60,4 +60,24 @@
         where name not in (select name from collect_url) or name is null
     </delete>
 
+    <insert id = "insertTradeHistoryBatch">
+        insert into trade_history(id,name,buy_price)
+        <foreach collection="tradeList" separator="," item="trade">
+            (null,#{position.name},#{position.buyPrice})
+        </foreach>
+    </insert>
+
+    <select id="getUnSellTradeHistory" resultType="com.study.springboot.entity.TradeHistory">
+        select id,name,buy_price 'buyPrice',sell_price 'sellPrice',coin
+        from tarde_history
+        where name = #{name}
+        and sell_price is null;
+    </select>
+
+    <update id="updateTradeHistory">
+        update trade_history
+        set sell_price = #{sellPrice},coin = #{coin]
+        where id = #{id}
+    </update>
+
 </mapper>

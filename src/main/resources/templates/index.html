@@ -17,6 +17,16 @@
     <button type="button" onclick="collectData()">爬取数据</button><br>
 </div>
 <div align="center">
+    <input type="text" id="itemInput" placeholder="名称" required>
+    <input type="text" id="priceInput" placeholder="价格" required>
+    <select id = "directionSelect">
+        <option value="1">买入</option>
+        <option value="2">卖出</option>
+    </select>
+    <input type="text" id="countInput" placeholder="数量" required>
+    <button type="button" onclick="saveTradeRecord()">确定</button><br>
+</div>
+<div align="center">
     <select id = "itemSelect" onchange="search()"></select>
 </div>
 <div id="container"></div>
@@ -193,6 +203,21 @@
                 json.plotOptions = plotOptions;
                 json.chart = {zoomType:'x'};
                 $('#container').highcharts(json);
+            }
+        )
+    }
+
+    function saveTradeRecord(){
+        var name = $("#nameInput").val();
+        var price = $("#priceInput").val();
+        var direction = $("#directionSelect").val();
+        var count = $("#countInput").val();
+        var data = {name:name,price:price,direction:direction,count:count};
+        $.post(
+            "/collect/dota2/tradeHistory/save",
+            data,
+            function (res) {
+                alert(res);
             }
         )
     }

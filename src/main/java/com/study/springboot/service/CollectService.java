@@ -17,4 +17,6 @@ public interface CollectService {
 
     void insertUrl(String url);
 
+    void saveTradeHistory(String name, Integer position, Double price, Integer count);
+
 }
