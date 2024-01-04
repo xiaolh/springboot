@@ -61,22 +61,22 @@
     </delete>
 
     <insert id = "insertTradeHistoryBatch">
-        insert into trade_history(id,name,buy_price)
+        insert into trade_history(id,name,buy_price) values
         <foreach collection="tradeList" separator="," item="trade">
-            (null,#{position.name},#{position.buyPrice})
+            (null,#{trade.name},#{trade.buyPrice})
         </foreach>
     </insert>
 
     <select id="getUnSellTradeHistory" resultType="com.study.springboot.entity.TradeHistory">
         select id,name,buy_price 'buyPrice',sell_price 'sellPrice',coin
-        from tarde_history
+        from trade_history
         where name = #{name}
         and sell_price is null;
     </select>
 
     <update id="updateTradeHistory">
         update trade_history
-        set sell_price = #{sellPrice},coin = #{coin]
+        set sell_price = #{sellPrice},coin = #{coin}
         where id = #{id}
     </update>
 

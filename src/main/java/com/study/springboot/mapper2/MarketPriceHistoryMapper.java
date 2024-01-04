@@ -37,7 +37,7 @@ public interface MarketPriceHistoryMapper {
 
     int deleteNoNameHistory();
 
-    int insertTradeHistoryBatch(List<TradeHistory> tradeList);
+    int insertTradeHistoryBatch(@Param("tradeList") List<TradeHistory> tradeList);
 
     List<TradeHistory> getUnSellTradeHistory(String name);
 
