@@ -1,11 +1,7 @@
 package com.study.springboot.thread;
 
-import sun.nio.ch.ThreadPool;
-
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 /**
  * @author xiaolh
