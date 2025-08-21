@@ -1,5 +1,6 @@
 package com.study.springboot.controller;
 
+import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,19 +30,33 @@ public class HelloController {
     // 通用下载
     @GetMapping("download")
     public void download(HttpServletResponse response) throws IOException {
-        JSONObject obj = new JSONObject();
-        obj.put("id",1);
-        obj.put("type",1);
-
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("download");
         StringBuilder builder = new StringBuilder();
-        builder.append(obj + "\n");
-        builder.append(obj);
+
+        for (int i = 1; i <= 100000; i++) {
+            JSONObject obj = new JSONObject();
+            obj.put("one",1);
+            obj.put("two",i + 1);
+            obj.put("three",i + 2);
+            obj.put("four",i + 3);
+            obj.put("five",i + 4);
+            obj.put("six",i + 5);
+            obj.put("seven",i + 6);
+            obj.put("eight",i + 7);
+            obj.put("night",i + 8);
+            obj.put("ten",i + 9);
+            builder.append(obj);
+            if (i != 100000) builder.append(obj + "\n");
+        }
 
         String fileName = URLEncoder.encode("测试.jsonl","UTF-8");
         response.setHeader("Content-Disposition","attachment; filename=\"" + fileName + "\"");
         response.setContentType("application/octet-stream");
 
         response.getOutputStream().write(builder.toString().getBytes());
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
     }
 
     @GetMapping("read")
