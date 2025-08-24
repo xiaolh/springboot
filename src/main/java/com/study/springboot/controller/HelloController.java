@@ -1,8 +1,8 @@
 package com.study.springboot.controller;
 
-import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONObject;
+import com.study.springboot.annotation.ExecuteTime;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -28,12 +28,10 @@ public class HelloController {
     }
 
     // 通用下载
+    @ExecuteTime(desc = "hello download")
     @GetMapping("download")
     public void download(HttpServletResponse response) throws IOException {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start("download");
         StringBuilder builder = new StringBuilder();
-
         for (int i = 1; i <= 100000; i++) {
             JSONObject obj = new JSONObject();
             obj.put("one",1);
@@ -49,14 +47,10 @@ public class HelloController {
             builder.append(obj);
             if (i != 100000) builder.append(obj + "\n");
         }
-
         String fileName = URLEncoder.encode("测试.jsonl","UTF-8");
         response.setHeader("Content-Disposition","attachment; filename=\"" + fileName + "\"");
         response.setContentType("application/octet-stream");
-
         response.getOutputStream().write(builder.toString().getBytes());
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint());
     }
 
     @GetMapping("read")
