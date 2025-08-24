@@ -28,7 +28,7 @@ public class HelloController {
     }
 
     // 通用下载
-    @ExecuteTime(desc = "hello download")
+    @ExecuteTime()
     @GetMapping("download")
     public void download(HttpServletResponse response) throws IOException {
         StringBuilder builder = new StringBuilder();

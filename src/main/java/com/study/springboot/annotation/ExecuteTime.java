@@ -13,6 +13,6 @@ public @interface ExecuteTime {
      * 业务描述
      * @return
      */
-    String desc();
+    String desc() default "";
 
 }
