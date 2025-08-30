@@ -15,8 +15,18 @@ import java.net.URLEncoder;
 @ApiIgnore
 public class HelloController {
 
+    /*@Autowired
+    private TestRunnable testRunnable;
+
+    @Autowired
+    private CollectService collectService;*/
+
     @GetMapping("hello")
     public String hello(){
+        /*System.out.println(testRunnable);
+        System.out.println(SpringContextUtil.getContext().getBean(TestRunnable.class));
+        new Thread(testRunnable).start();
+        System.out.println(collectService);*/
         return "hello";
     }
 

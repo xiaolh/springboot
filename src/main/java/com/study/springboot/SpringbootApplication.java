@@ -1,12 +1,14 @@
 package com.study.springboot;
 
 import com.study.springboot.utils.LoginInterceptor;
+import com.study.springboot.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,7 +21,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class SpringbootApplication extends WebMvcConfigurerAdapter implements ApplicationRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringbootApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(SpringbootApplication.class, args);
+        SpringContextUtil.setContext(context);
     }
 
     /**
