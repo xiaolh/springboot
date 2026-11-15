@@ -1,4 +1,4 @@
-package com.study.springboot.task;
+/*package com.study.springboot.task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,4 +23,4 @@ public class BootRunner  implements ApplicationRunner {
 
     }
 
-}
+}*/
